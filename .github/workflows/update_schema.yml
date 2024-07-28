@@ -1,0 +1,56 @@
+name: Deploy schema to Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        type: choice
+        description: 'Branch to deploy'
+        required: true
+        default: 'develop'
+        options:
+          - 'develop'
+          - 'stable'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "update schema"
+  cancel-in-progress: false
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: 'config_schema'
+
+      - name: Checkout freqtrade repo
+        uses: actions/checkout@v4
+        with:
+          repository: freqtrade/freqtrade
+          path: 'freqtrade'
+          ref: "${{ github.event.inputs.branch }}"
+
+
+      - name: Copy schema.json file from freqtrade repo to config_schema
+        if : ${{ github.event.inputs.branch == 'stable' }}
+        run: |
+          cp freqtrade/build_helpers/schema.json config_schema/schema/schema.json
+
+      - name: Copy schema.json file from freqtrade repo to config_schema
+        if : ${{ github.event.inputs.branch == 'develop' }}
+        run: |
+          cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update schema.json file ${{ github.event.inputs.branch }}"
+          commit_user_name: Freqtrade Bot <freqtrade@protonmail.com>
+          commit_user_email: freqtrade@protonmail.com
+          file_pattern: 'schema/.*json'
+          repository: "config_schema"
