@@ -1,6 +1,9 @@
 name: Update schema.json file
 
 on:
+  schedule:
+    - cron: '0 2 * * *'
+
   workflow_dispatch:
     inputs:
       branch:
