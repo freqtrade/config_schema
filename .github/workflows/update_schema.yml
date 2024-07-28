@@ -1,4 +1,4 @@
-name: Deploy schema to Pages
+name: Update schema.json file
 
 on:
   workflow_dispatch:
