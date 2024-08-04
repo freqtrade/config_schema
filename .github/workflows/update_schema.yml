@@ -42,12 +42,12 @@ jobs:
 
 
       - name: Copy schema.json file from freqtrade repo to config_schema
-        if : ${{ github.event.inputs.branch == 'stable' }}
+        if : (github.event_name != 'workflow_dispatch' || github.event.inputs.branch == 'stable')
         run: |
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema.json
 
       - name: Copy schema.json file from freqtrade repo to config_schema
-        if : ${{ github.event.inputs.branch == 'develop' }}
+        if : (github.event_name != 'workflow_dispatch' || github.event.inputs.branch == 'develop')
         run: |
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
 
