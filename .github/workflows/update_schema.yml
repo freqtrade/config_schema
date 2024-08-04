@@ -27,6 +27,8 @@ jobs:
   update-schema:
     name: Update schema.json file
     runs-on: ubuntu-latest
+    outputs:
+      changes_detected: ${{ steps.auto-commit-action.outputs.changes_detected }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,9 +54,21 @@ jobs:
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
 
       - uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit-action
         with:
           commit_message: "Update schema.json file ${{ github.event.inputs.branch }}"
           commit_user_name: Freqtrade Bot <freqtrade@protonmail.com>
           commit_user_email: freqtrade@protonmail.com
           file_pattern: 'schema/*.json'
           repository: "config_schema"
+
+  deploy-to-gha:
+    needs: [ update-schema ]
+    if: needs.update-schema.outputs.changes_detected == 'true'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/schema_deploy.yml
+
+
