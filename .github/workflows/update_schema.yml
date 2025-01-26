@@ -44,8 +44,8 @@ jobs:
           path: 'freqtrade'
           ref: "develop"
 
-      - name: Copy schema.json file from freqtrade repo to config_schema
-        if : ${{ github.event.inputs.branch == 'develop' }}
+      - name: Copy schema_dev.json file from freqtrade repo to config_schema
+        if : (github.event_name != 'workflow_dispatch' || ${{ github.event.inputs.branch == 'develop' }})
         run: |
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
 
