@@ -40,18 +40,24 @@ jobs:
         with:
           repository: freqtrade/freqtrade
           path: 'freqtrade'
-          ref: "${{ github.event.inputs.branch }}"
+          ref: "develop"
 
+      - name: Copy schema.json file from freqtrade repo to config_schema
+        if : ${{ github.event.inputs.branch == 'develop' }}
+        run: |
+          cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
+
+      - name: Checkout freqtrade repo
+        uses: actions/checkout@v4
+        with:
+          repository: freqtrade/freqtrade
+          path: 'freqtrade'
+          ref: "stable"
 
       - name: Copy schema.json file from freqtrade repo to config_schema
         if : (github.event_name != 'workflow_dispatch' || github.event.inputs.branch == 'stable')
         run: |
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema.json
-
-      - name: Copy schema.json file from freqtrade repo to config_schema
-        if : (github.event_name != 'workflow_dispatch' || github.event.inputs.branch == 'develop')
-        run: |
-          cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         id: auto-commit-action
