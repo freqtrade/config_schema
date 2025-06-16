@@ -61,7 +61,7 @@ jobs:
         run: |
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema.json
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v6
         id: auto-commit-action
         with:
           commit_message: "Update schema.json file ${{ github.event.inputs.branch }}"
