@@ -33,12 +33,12 @@ jobs:
       changes_detected: ${{ steps.auto-commit-action.outputs.changes_detected }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: 'config_schema'
 
       - name: Checkout freqtrade repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: freqtrade/freqtrade
           path: 'freqtrade'
@@ -50,7 +50,7 @@ jobs:
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
 
       - name: Checkout freqtrade repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: freqtrade/freqtrade
           path: 'freqtrade'
