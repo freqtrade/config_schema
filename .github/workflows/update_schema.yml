@@ -17,8 +17,7 @@ on:
           - 'develop'
           - 'stable'
 
-permissions:
-  contents: write
+
 
 concurrency:
   group: "update schema"
@@ -31,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changes_detected: ${{ steps.auto-commit-action.outputs.changes_detected }}
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v5
