@@ -35,23 +35,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
+          persist-credentials: false
           path: 'config_schema'
 
       - name: Checkout freqtrade repo
         uses: actions/checkout@v5
         with:
+          persist-credentials: false
           repository: freqtrade/freqtrade
           path: 'freqtrade'
           ref: "develop"
 
       - name: Copy schema_dev.json file from freqtrade repo to config_schema
-        if : (github.event_name != 'workflow_dispatch' || ${{ github.event.inputs.branch == 'develop' }})
+        if : (github.event_name != 'workflow_dispatch' || github.event.inputs.branch == 'develop')
         run: |
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
 
       - name: Checkout freqtrade repo
         uses: actions/checkout@v5
         with:
+          persist-credentials: false
           repository: freqtrade/freqtrade
           path: 'freqtrade'
           ref: "stable"
@@ -61,7 +64,7 @@ jobs:
         run: |
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema.json
 
-      - uses: stefanzweifel/git-auto-commit-action@v7
+      - uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 # v7.0.0
         id: auto-commit-action
         with:
           commit_message: "Update schema.json file ${{ github.event.inputs.branch }}"
