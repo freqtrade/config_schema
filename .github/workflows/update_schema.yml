@@ -36,7 +36,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6.0.0
         with:
-          persist-credentials: false
+          # stefanzweifel/git-auto-commit-action requires persist-credentials to be true
+          persist-credentials: true
           path: 'config_schema'
 
       - name: Checkout freqtrade repo
