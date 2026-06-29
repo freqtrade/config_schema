@@ -34,14 +34,14 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           # stefanzweifel/git-auto-commit-action requires persist-credentials to be true
           persist-credentials: true
           path: 'config_schema'
 
       - name: Checkout freqtrade repo
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
           repository: freqtrade/freqtrade
@@ -54,7 +54,7 @@ jobs:
           cp freqtrade/build_helpers/schema.json config_schema/schema/schema_dev.json
 
       - name: Checkout freqtrade repo
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
           repository: freqtrade/freqtrade
